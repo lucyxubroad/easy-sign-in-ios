@@ -8,7 +8,16 @@
 
 import UIKit
 
+let aces = Event(club: "Assorted Aces", event: "Dance Practice", room: "203", building: "Rockefeller Hall")
+let appdev = Event(club: "CUAppDev", event: "Developer Meeting", room: "B04", building: "Upson Hall")
+let aiesec = Event(club: "Cornell AIESEC", event: "General Body Meeting", room: "102", building: "Clarkson Hall")
+
+var events = [aces, appdev, aiesec]
+
 class NearbyEventsViewController: UIViewController {
+    
+    var eventsTableView: UITableView!
+    let eventsReuseIdentifier = "EventsReuseIdentifier"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +25,54 @@ class NearbyEventsViewController: UIViewController {
         view.backgroundColor = UIColor.white
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Nearby Events"
+        
+        eventsTableView = UITableView()
+        eventsTableView.translatesAutoresizingMaskIntoConstraints = false
+        eventsTableView.allowsSelection = true
+        eventsTableView.delegate = self
+        eventsTableView.dataSource = self
+        eventsTableView.register(EventTableViewCell.self, forCellReuseIdentifier: eventsReuseIdentifier)
+        eventsTableView.estimatedRowHeight = 100.0
+        eventsTableView.separatorStyle = .none
+        eventsTableView.tableFooterView = UIView() // so there's no empty lines at the bottom
+        
+        view.addSubview(eventsTableView)
+        
+        setUpConstraints()
     }
     
+    func setUpConstraints() {
+        NSLayoutConstraint.activate([
+            eventsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            eventsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            eventsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            eventsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            ])
+    }
+    
+}
+
+extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("tableview")
+        let cell = tableView.dequeueReusableCell(withIdentifier: eventsReuseIdentifier, for: indexPath) as! EventTableViewCell
+        print(events[indexPath.row].event)
+        cell.configure(for: events[indexPath.row])
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return events.count
+    }
+    
+    func tableView(_ tableView: UITableView,heightForRowAt indexPath:IndexPath) -> CGFloat
+    {
+        return 150
+    }
+    
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
+//    {
+//        return 100
+//    }
 }
