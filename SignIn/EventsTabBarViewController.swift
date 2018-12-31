@@ -22,15 +22,15 @@ class EventsTabBarViewController: UITabBarController {
     
     func setupTabBar() {
         
-        let videoController = createNavController(vc: VideoViewController(), selected: #imageLiteral(resourceName: "video_white"), unselected: #imageLiteral(resourceName: "video_black"))
-        let favoriteController = createNavController(vc: FavoritesViewController(), selected: #imageLiteral(resourceName: "star_white"), unselected: #imageLiteral(resourceName: "star_black"))
+        let nearbyEventsController = createNavController(vc: NearbyEventsViewController(), selected: #imageLiteral(resourceName: "calendar-filled"), unselected: #imageLiteral(resourceName: "calendar-unfilled"))
+        let myEventsController = createNavController(vc: MyEventsViewController(), selected: #imageLiteral(resourceName: "invite-filled"), unselected: #imageLiteral(resourceName: "invite-unfilled"))
         
-        viewControllers = [videoController, favoriteController]
+        viewControllers = [nearbyEventsController, myEventsController]
         
         guard let items = tabBar.items else { return }
         
         for item in items {
-            item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+            item.imageInsets = UIEdgeInsets(top: 2, left: 0, bottom: -2, right: 0)
         }
     }
 

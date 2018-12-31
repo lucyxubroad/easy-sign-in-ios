@@ -8,14 +8,14 @@
 
 import UIKit
 
-class VideoViewController: UIViewController {
+class NearbyEventsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.white
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Videos"
+        navigationItem.title = "Nearby Events"
     }
     
 }

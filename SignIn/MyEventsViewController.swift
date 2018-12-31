@@ -8,14 +8,14 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController {
+class MyEventsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.white
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Favorites"
+        navigationItem.title = "My Events"
     }
 
 }
