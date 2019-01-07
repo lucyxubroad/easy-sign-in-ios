@@ -8,6 +8,7 @@ target 'SignIn' do
   # Pods for SignIn
   pod 'Alamofire'
   pod 'SnapKit'
+  pod 'GoogleSignIn'
 
   target 'SignInTests' do
     inherit! :search_paths
