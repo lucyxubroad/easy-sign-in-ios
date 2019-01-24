@@ -23,8 +23,12 @@ class NearbyEventsViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.white
-        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Nearby Events"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.barTintColor = UIColor(red: 122/255, green: 171/255, blue: 237/255, alpha: 1)
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
         
         eventsTableView = UITableView()
         eventsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,8 +36,7 @@ class NearbyEventsViewController: UIViewController {
         eventsTableView.delegate = self
         eventsTableView.dataSource = self
         eventsTableView.register(EventTableViewCell.self, forCellReuseIdentifier: eventsReuseIdentifier)
-        eventsTableView.estimatedRowHeight = 100.0
-        eventsTableView.separatorStyle = .none
+        eventsTableView.estimatedRowHeight = 50.0
         eventsTableView.tableFooterView = UIView() // so there's no empty lines at the bottom
         
         view.addSubview(eventsTableView)
@@ -68,7 +71,7 @@ extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView,heightForRowAt indexPath:IndexPath) -> CGFloat
     {
-        return 150
+        return 75
     }
     
 //    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat

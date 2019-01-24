@@ -10,25 +10,31 @@ import UIKit
 
 class EventTableViewCell: UITableViewCell {
     
-    var eventWrapper: UIView!
     var eventLabel: UILabel!
+    var clubLabel: UILabel!
+    var locationLabel: UILabel!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        contentView.backgroundColor = UIColor(red: 122/255, green: 171/255, blue: 237/255, alpha: 1)
-        
-        eventWrapper = UIView()
-        eventWrapper.translatesAutoresizingMaskIntoConstraints = false
-        eventWrapper.backgroundColor = UIColor(red: 156/255, green: 192/255, blue: 241/255, alpha: 1)
-        eventWrapper.layer.cornerRadius = 10
         
         eventLabel = UILabel()
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
         eventLabel.textColor = .black
-        eventLabel.font = UIFont.systemFont(ofSize: 14)
+        eventLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.bold)
         
-        eventWrapper.addSubview(eventLabel)
-        contentView.addSubview(eventWrapper)
+        locationLabel = UILabel()
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        locationLabel.textColor = .gray
+        locationLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.light)
+        
+        clubLabel = UILabel()
+        clubLabel.translatesAutoresizingMaskIntoConstraints = false
+        clubLabel.textColor = .gray
+        clubLabel.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.medium)
+        
+        contentView.addSubview(eventLabel)
+        contentView.addSubview(locationLabel)
+        contentView.addSubview(clubLabel)
         
         updateConstraints()
     }
@@ -36,15 +42,12 @@ class EventTableViewCell: UITableViewCell {
     override func updateConstraints() {
         
         NSLayoutConstraint.activate([
-            eventWrapper.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
-            eventWrapper.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            eventWrapper.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            eventWrapper.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15)
-            ])
-        
-        NSLayoutConstraint.activate([
-            eventLabel.topAnchor.constraint(equalTo: eventWrapper.topAnchor, constant: 15),
-            eventLabel.leadingAnchor.constraint(equalTo: eventWrapper.leadingAnchor, constant: 15)
+            eventLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+            eventLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            clubLabel.topAnchor.constraint(equalTo: eventLabel.bottomAnchor, constant: 10),
+            clubLabel.leadingAnchor.constraint(equalTo: eventLabel.leadingAnchor),
+            locationLabel.topAnchor.constraint(equalTo: eventLabel.topAnchor),
+            locationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15)
             ])
         
         super.updateConstraints()
@@ -53,6 +56,8 @@ class EventTableViewCell: UITableViewCell {
     
     func configure(for event: Event) {
         eventLabel.text = event.event
+        clubLabel.text = event.club
+        locationLabel.text = "\(event.building), \(event.room)"
     }
     
     required init?(coder aDecoder: NSCoder) {
