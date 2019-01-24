@@ -117,7 +117,7 @@ class CreateEventsViewController: UIViewController {
         createEventButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         createEventButton.layer.cornerRadius = 25
         createEventButton.backgroundColor = UIColor(red: 254/255, green: 231/255, blue: 171/255, alpha: 1)
-        createEventButton.addTarget(self, action: #selector(dismissCreateView), for: .touchUpInside)
+        createEventButton.addTarget(self, action: #selector(createEvent), for: .touchUpInside)
         
         view.addSubview(dismissButton)
         view.addSubview(createEventLabel)
@@ -132,6 +132,7 @@ class CreateEventsViewController: UIViewController {
         view.addSubview(createEventButton)
         
         setUpConstraints()
+        hideKeyboard()
     }
     
     func setUpConstraints() {
@@ -191,6 +192,29 @@ class CreateEventsViewController: UIViewController {
     
     @objc func dismissCreateView() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func createEvent() {
+        if let event = eventNameTextField.text, let club = organizationTextField.text, let building = buildingTextField.text, let room = roomTextField.text {
+            NetworkManager.createEvent(event: event, club: club, building: building, room: room) { newEvent in
+                DispatchQueue.main.async {
+                    print(newEvent)
+                }
+            }
+        }
+    }
+    
+    func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissKeyboard)
+        )
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     /*

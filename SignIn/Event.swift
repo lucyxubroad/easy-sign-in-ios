@@ -21,3 +21,18 @@ class Event {
         self.building = building
     }
 }
+
+struct EventReturnResponse: Codable {
+    var data: Event2
+}
+
+struct EventResponse: Codable {
+    var data: [Event2]
+}
+
+struct Event2: Codable {
+    var club: String
+    var event: String
+    var room: String
+    var building: String
+}
