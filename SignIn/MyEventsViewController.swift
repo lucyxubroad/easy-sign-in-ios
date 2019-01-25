@@ -14,6 +14,8 @@ class MyEventsViewController: UIViewController {
     let eventsReuseIdentifier = "EventsReuseIdentifier"
     var createEventButton: UIButton!
     
+    var events = [Event]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,6 +49,7 @@ class MyEventsViewController: UIViewController {
         view.addSubview(eventsTableView)
         
         setUpConstraints()
+        getEvents()
     }
     
     func setUpConstraints() {
@@ -78,6 +81,16 @@ class MyEventsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         view.alpha = 0.0
+    }
+    
+    /// Gets classes from the network by making an API call.
+    func getEvents() {
+        NetworkManager.getEvents { eventsArray in
+            self.events = eventsArray
+            DispatchQueue.main.async {
+                self.eventsTableView.reloadData()
+            }
+        }
     }
 }
 

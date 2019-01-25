@@ -25,7 +25,7 @@ class CreateEventsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = .white
         
         dismissButton = UIButton()
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
@@ -199,6 +199,7 @@ class CreateEventsViewController: UIViewController {
             NetworkManager.createEvent(event: event, club: club, building: building, room: room) { newEvent in
                 DispatchQueue.main.async {
                     print(newEvent)
+                    self.dismiss(animated: true, completion: nil)
                 }
             }
         }

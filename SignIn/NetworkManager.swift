@@ -12,11 +12,9 @@ import Alamofire
 
 class NetworkManager {
     private static let endpointBase = "http://localhost:5000/"
-    private static let eventsEndpoint = "http://localhost:5000/api/events/"
-
+    private static let eventsEndpoint = "http://35.229.55.231/api/events/"
     
-    
-    static func getEvents(completion: @escaping ([Event2]) -> Void) {
+    static func getEvents(completion: @escaping ([Event]) -> Void) {
         Alamofire.request(eventsEndpoint, method: .get).validate().responseData { (response) in
             switch response.result {
             case .success(let data):
@@ -32,7 +30,7 @@ class NetworkManager {
         }
     }
     
-    static func createEvent(event: String, club: String, building: String, room: String, completion: @escaping (Event2) -> Void) {
+    static func createEvent(event: String, club: String, building: String, room: String, completion: @escaping (Event) -> Void) {
         let parameters: [String: Any] = [
             "event": event,
             "club": club,

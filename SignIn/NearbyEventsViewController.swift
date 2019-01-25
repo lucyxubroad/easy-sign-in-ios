@@ -8,13 +8,15 @@
 
 import UIKit
 
-let aces = Event(club: "Assorted Aces", event: "Dance Practice", room: "203", building: "Rockefeller Hall")
-let appdev = Event(club: "CUAppDev", event: "Developer Meeting", room: "B04", building: "Upson Hall")
-let aiesec = Event(club: "Cornell AIESEC", event: "General Body Meeting", room: "102", building: "Clarkson Hall")
-
-var events = [aces, appdev, aiesec]
+//let aces = Event(club: "Assorted Aces", event: "Dance Practice", room: "203", building: "Rockefeller Hall")
+//let appdev = Event(club: "CUAppDev", event: "Developer Meeting", room: "B04", building: "Upson Hall")
+//let aiesec = Event(club: "Cornell AIESEC", event: "General Body Meeting", room: "102", building: "Clarkson Hall")
+//
+//var events = [aces, appdev, aiesec]
 
 class NearbyEventsViewController: UIViewController {
+    
+    var events = [Event]()
     
     var eventsTableView: UITableView!
     let eventsReuseIdentifier = "EventsReuseIdentifier"
@@ -29,6 +31,7 @@ class NearbyEventsViewController: UIViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white
         ]
+        navigationController?.navigationBar.tintColor = .white
         
         eventsTableView = UITableView()
         eventsTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -42,6 +45,7 @@ class NearbyEventsViewController: UIViewController {
         view.addSubview(eventsTableView)
         
         setUpConstraints()
+        getEvents()
     }
     
     func setUpConstraints() {
@@ -53,6 +57,27 @@ class NearbyEventsViewController: UIViewController {
             ])
     }
     
+    /// Gets classes from the network by making an API call.
+    func getEvents() {
+        NetworkManager.getEvents { eventsArray in
+            self.events = eventsArray
+            DispatchQueue.main.async {
+                self.eventsTableView.reloadData()
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.view.alpha = 1.0
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.view.alpha = 0.0
+    }
+    
+    
 }
 
 extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -63,6 +88,13 @@ extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource
         print(events[indexPath.row].event)
         cell.configure(for: events[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let event = events[indexPath.row]
+        let eventNavigationViewController = EventNavigationViewController()
+//        eventNavigationViewController.event = event
+        navigationController?.pushViewController(eventNavigationViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

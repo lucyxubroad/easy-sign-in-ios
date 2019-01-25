@@ -8,29 +8,15 @@
 
 import Foundation
 
-class Event {
-    var club: String
-    var event: String
-    var room: String
-    var building: String
-    
-    init(club: String, event: String, room: String, building: String) {
-        self.club = club
-        self.event = event
-        self.room = room
-        self.building = building
-    }
-}
-
 struct EventReturnResponse: Codable {
-    var data: Event2
+    var data: Event
 }
 
 struct EventResponse: Codable {
-    var data: [Event2]
+    var data: [Event]
 }
 
-struct Event2: Codable {
+struct Event: Codable {
     var club: String
     var event: String
     var room: String
