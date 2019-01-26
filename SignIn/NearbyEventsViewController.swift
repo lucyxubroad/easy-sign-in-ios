@@ -26,9 +26,13 @@ class NearbyEventsViewController: UIViewController {
         
         view.backgroundColor = UIColor.white
         navigationItem.title = "Nearby Events"
+        navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.barTintColor = UIColor(red: 122/255, green: 171/255, blue: 237/255, alpha: 1)
         navigationController?.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white
         ]
         navigationController?.navigationBar.tintColor = .white
@@ -91,9 +95,9 @@ extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let event = events[indexPath.row]
+        let event = events[indexPath.row]
         let eventNavigationViewController = EventNavigationViewController()
-//        eventNavigationViewController.event = event
+        eventNavigationViewController.event = event
         navigationController?.pushViewController(eventNavigationViewController, animated: true)
     }
     

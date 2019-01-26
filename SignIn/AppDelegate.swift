@@ -21,12 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = UINavigationController(rootViewController: ViewController())
         window?.makeKeyAndVisible()
         
-        UINavigationBar.appearance().tintColor = .white
-        
-        let navigationFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-        let navigationFontAttributes = [NSAttributedString.Key.font : navigationFont]
-        UINavigationBar.appearance().titleTextAttributes = navigationFontAttributes
-        UIBarButtonItem.appearance().setTitleTextAttributes(navigationFontAttributes, for: .normal)
         return true
     }
     
