@@ -76,6 +76,7 @@ class MyEventsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.alpha = 1.0
+        self.getEvents()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

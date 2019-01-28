@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateEventsViewController: UIViewController {
+class CreateEventsViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var dismissButton: UIButton!
     var createEventLabel: UILabel!
@@ -16,11 +16,15 @@ class CreateEventsViewController: UIViewController {
     var organizationTextField: UITextField!
     var eventNameLabel: UILabel!
     var eventNameTextField: UITextField!
-    var buildingLabel: UILabel!
-    var buildingTextField: UITextField!
+    var locationLabel: UILabel!
+    var locationTextField: UITextField!
     var roomLabel: UILabel!
-    var roomTextField: UITextField!
+    var descriptionTextField: UITextField!
     var createEventButton: UIButton!
+    var eventImageView: UIImageView!
+    var eventTintedImageView: UIImageView!
+    var eventImagePickerButton: UIButton!
+    var eventImagePickerController: UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,18 +40,39 @@ class CreateEventsViewController: UIViewController {
         createEventLabel.translatesAutoresizingMaskIntoConstraints = false
         createEventLabel.textColor = UIColor(red: 122/255, green: 171/255, blue: 237/255, alpha: 1)
         createEventLabel.text = "Create Event"
-        createEventLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        createEventLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+
+        eventImageView = UIImageView()
+        eventImageView.translatesAutoresizingMaskIntoConstraints = false
+        eventImageView.layer.cornerRadius = 20
+        eventImageView.image = UIImage(named: "cornell")
+        eventImageView.contentMode = .scaleAspectFill
+        eventImageView.clipsToBounds = true
+        
+        eventTintedImageView = UIImageView()
+        eventTintedImageView.translatesAutoresizingMaskIntoConstraints = false
+        eventTintedImageView.layer.cornerRadius = 20
+        eventTintedImageView.backgroundColor = UIColor(red: 122/255, green: 171/255, blue: 237/255, alpha: 0.2)
+        
+        eventImagePickerButton = UIButton()
+        eventImagePickerButton.translatesAutoresizingMaskIntoConstraints = false
+        eventImagePickerButton.setTitle("Select banner", for: .normal)
+        eventImagePickerButton.setTitleColor(UIColor(red: 122/255, green: 171/255, blue: 237/255, alpha: 1), for: .normal)
+        eventImagePickerButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
+        eventImagePickerButton.addTarget(self, action: #selector(openImageGallery), for: .touchUpInside)
+        
+        eventImagePickerController = UIImagePickerController()
         
         organizationLabel = UILabel()
         organizationLabel.translatesAutoresizingMaskIntoConstraints = false
         organizationLabel.textColor = UIColor(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
         organizationLabel.text = "Organization"
-        organizationLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        organizationLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         
         organizationTextField = UITextField()
         organizationTextField.translatesAutoresizingMaskIntoConstraints = false
         organizationTextField.textColor = .black
-        organizationTextField.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        organizationTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         organizationTextField.borderStyle = .none
         organizationTextField.layer.backgroundColor = UIColor.white.cgColor
         organizationTextField.layer.masksToBounds = false
@@ -55,17 +80,18 @@ class CreateEventsViewController: UIViewController {
         organizationTextField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
         organizationTextField.layer.shadowOpacity = 1.0
         organizationTextField.layer.shadowRadius = 0.0
+        organizationTextField.delegate = self
         
         eventNameLabel = UILabel()
         eventNameLabel.translatesAutoresizingMaskIntoConstraints = false
         eventNameLabel.textColor = UIColor(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
         eventNameLabel.text = "Event Name"
-        eventNameLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        eventNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         
         eventNameTextField = UITextField()
         eventNameTextField.translatesAutoresizingMaskIntoConstraints = false
         eventNameTextField.textColor = .black
-        eventNameTextField.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        eventNameTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         eventNameTextField.borderStyle = .none
         eventNameTextField.layer.backgroundColor = UIColor.white.cgColor
         eventNameTextField.layer.masksToBounds = false
@@ -73,42 +99,45 @@ class CreateEventsViewController: UIViewController {
         eventNameTextField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
         eventNameTextField.layer.shadowOpacity = 1.0
         eventNameTextField.layer.shadowRadius = 0.0
+        eventNameTextField.delegate = self
         
-        buildingLabel = UILabel()
-        buildingLabel.translatesAutoresizingMaskIntoConstraints = false
-        buildingLabel.textColor = UIColor(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
-        buildingLabel.text = "Building"
-        buildingLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        locationLabel = UILabel()
+        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        locationLabel.textColor = UIColor(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
+        locationLabel.text = "Location"
+        locationLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         
-        buildingTextField = UITextField()
-        buildingTextField.translatesAutoresizingMaskIntoConstraints = false
-        buildingTextField.textColor = .black
-        buildingTextField.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        buildingTextField.borderStyle = .none
-        buildingTextField.layer.backgroundColor = UIColor.white.cgColor
-        buildingTextField.layer.masksToBounds = false
-        buildingTextField.layer.shadowColor = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1).cgColor
-        buildingTextField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        buildingTextField.layer.shadowOpacity = 1.0
-        buildingTextField.layer.shadowRadius = 0.0
+        locationTextField = UITextField()
+        locationTextField.translatesAutoresizingMaskIntoConstraints = false
+        locationTextField.textColor = .black
+        locationTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        locationTextField.borderStyle = .none
+        locationTextField.layer.backgroundColor = UIColor.white.cgColor
+        locationTextField.layer.masksToBounds = false
+        locationTextField.layer.shadowColor = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1).cgColor
+        locationTextField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        locationTextField.layer.shadowOpacity = 1.0
+        locationTextField.layer.shadowRadius = 0.0
+        locationTextField.delegate = self
         
         roomLabel = UILabel()
         roomLabel.translatesAutoresizingMaskIntoConstraints = false
         roomLabel.textColor = UIColor(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
-        roomLabel.text = "Room"
-        roomLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        roomLabel.text = "Description"
+        roomLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         
-        roomTextField = UITextField()
-        roomTextField.translatesAutoresizingMaskIntoConstraints = false
-        roomTextField.textColor = .black
-        roomTextField.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        roomTextField.borderStyle = .none
-        roomTextField.layer.backgroundColor = UIColor.white.cgColor
-        roomTextField.layer.masksToBounds = false
-        roomTextField.layer.shadowColor = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1).cgColor
-        roomTextField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        roomTextField.layer.shadowOpacity = 1.0
-        roomTextField.layer.shadowRadius = 0.0
+        descriptionTextField = UITextField()
+        descriptionTextField.translatesAutoresizingMaskIntoConstraints = false
+        descriptionTextField.textColor = .black
+        descriptionTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        descriptionTextField.borderStyle = .none
+        descriptionTextField.layer.backgroundColor = UIColor.white.cgColor
+        descriptionTextField.layer.masksToBounds = false
+        descriptionTextField.layer.shadowColor = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1).cgColor
+        descriptionTextField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        descriptionTextField.layer.shadowOpacity = 1.0
+        descriptionTextField.layer.shadowRadius = 0.0
+        descriptionTextField.delegate = self
         
         createEventButton = UIButton()
         createEventButton.translatesAutoresizingMaskIntoConstraints = false
@@ -125,11 +154,14 @@ class CreateEventsViewController: UIViewController {
         view.addSubview(organizationTextField)
         view.addSubview(eventNameLabel)
         view.addSubview(eventNameTextField)
-        view.addSubview(buildingLabel)
-        view.addSubview(buildingTextField)
+        view.addSubview(locationLabel)
+        view.addSubview(locationTextField)
         view.addSubview(roomLabel)
-        view.addSubview(roomTextField)
+        view.addSubview(descriptionTextField)
         view.addSubview(createEventButton)
+        view.addSubview(eventImageView)
+        view.addSubview(eventTintedImageView)
+        view.addSubview(eventImagePickerButton)
         
         setUpConstraints()
         hideKeyboard()
@@ -138,7 +170,7 @@ class CreateEventsViewController: UIViewController {
     func setUpConstraints() {
         
         NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 75),
+            dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
             dismissButton.widthAnchor.constraint(equalToConstant: 18),
             dismissButton.heightAnchor.constraint(equalToConstant: 18),
@@ -147,39 +179,56 @@ class CreateEventsViewController: UIViewController {
             ])
         
         NSLayoutConstraint.activate([
-            organizationLabel.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 40),
+            eventImageView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 30),
+            eventImageView.leadingAnchor.constraint(equalTo: dismissButton.leadingAnchor),
+            eventImageView.heightAnchor.constraint(equalToConstant: 80),
+            eventImageView.widthAnchor.constraint(equalToConstant: 190),
+            eventTintedImageView.topAnchor.constraint(equalTo: eventImageView.topAnchor),
+            eventTintedImageView.bottomAnchor.constraint(equalTo: eventImageView.bottomAnchor),
+            eventTintedImageView.leadingAnchor.constraint(equalTo: eventImageView.leadingAnchor),
+            eventTintedImageView.trailingAnchor.constraint(equalTo: eventImageView.trailingAnchor),
+            ])
+        
+        NSLayoutConstraint.activate([
+            eventImagePickerButton.centerYAnchor.constraint(equalTo: eventImageView.centerYAnchor),
+            eventImagePickerButton.leadingAnchor.constraint(equalTo: eventImageView.trailingAnchor, constant: 10),
+            eventImagePickerButton.trailingAnchor.constraint(equalTo: organizationTextField.trailingAnchor)
+            ])
+        
+        NSLayoutConstraint.activate([
+            organizationLabel.topAnchor.constraint(equalTo: eventImageView.bottomAnchor, constant: 20),
             organizationLabel.leadingAnchor.constraint(equalTo: dismissButton.leadingAnchor),
-            organizationTextField.topAnchor.constraint(equalTo: organizationLabel.bottomAnchor, constant: 15),
+            organizationTextField.topAnchor.constraint(equalTo: organizationLabel.bottomAnchor, constant: 10),
             organizationTextField.leadingAnchor.constraint(equalTo: organizationLabel.leadingAnchor),
             organizationTextField.heightAnchor.constraint(equalToConstant: 15),
             organizationTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
             ])
         
         NSLayoutConstraint.activate([
-            eventNameLabel.topAnchor.constraint(equalTo: organizationTextField.bottomAnchor, constant: 25),
+            eventNameLabel.topAnchor.constraint(equalTo: organizationTextField.bottomAnchor, constant: 20),
             eventNameLabel.leadingAnchor.constraint(equalTo: dismissButton.leadingAnchor),
-            eventNameTextField.topAnchor.constraint(equalTo: eventNameLabel.bottomAnchor, constant: 15),
+            eventNameTextField.topAnchor.constraint(equalTo: eventNameLabel.bottomAnchor, constant: 10),
             eventNameTextField.leadingAnchor.constraint(equalTo: eventNameLabel.leadingAnchor),
             eventNameTextField.trailingAnchor.constraint(equalTo: organizationTextField.trailingAnchor),
             eventNameTextField.heightAnchor.constraint(equalToConstant: 15)
             ])
         
         NSLayoutConstraint.activate([
-            buildingLabel.topAnchor.constraint(equalTo: eventNameTextField.bottomAnchor, constant: 25),
-            buildingLabel.leadingAnchor.constraint(equalTo: dismissButton.leadingAnchor),
-            buildingTextField.topAnchor.constraint(equalTo: buildingLabel.bottomAnchor, constant: 15),
-            buildingTextField.leadingAnchor.constraint(equalTo: buildingLabel.leadingAnchor),
-            buildingTextField.trailingAnchor.constraint(equalTo: organizationTextField.trailingAnchor),
-            buildingTextField.heightAnchor.constraint(equalToConstant: 15)
+            locationLabel.topAnchor.constraint(equalTo: eventNameTextField.bottomAnchor, constant: 20),
+            locationLabel.leadingAnchor.constraint(equalTo: dismissButton.leadingAnchor),
+            locationTextField.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 10),
+            locationTextField.leadingAnchor.constraint(equalTo: locationLabel.leadingAnchor),
+            locationTextField.trailingAnchor.constraint(equalTo: organizationTextField.trailingAnchor),
+            locationTextField.heightAnchor.constraint(equalToConstant: 15)
             ])
         
         NSLayoutConstraint.activate([
-            roomLabel.topAnchor.constraint(equalTo: buildingTextField.bottomAnchor, constant: 25),
+            roomLabel.topAnchor.constraint(equalTo: locationTextField.bottomAnchor, constant: 20),
             roomLabel.leadingAnchor.constraint(equalTo: dismissButton.leadingAnchor),
-            roomTextField.topAnchor.constraint(equalTo: roomLabel.bottomAnchor, constant: 15),
-            roomTextField.leadingAnchor.constraint(equalTo: roomLabel.leadingAnchor),
-            roomTextField.trailingAnchor.constraint(equalTo: organizationTextField.trailingAnchor),
-            roomTextField.heightAnchor.constraint(equalToConstant: 15)
+            descriptionTextField.topAnchor.constraint(equalTo: roomLabel.bottomAnchor, constant: 10),
+            descriptionTextField.leadingAnchor.constraint(equalTo: roomLabel.leadingAnchor),
+            descriptionTextField.trailingAnchor.constraint(equalTo: organizationTextField.trailingAnchor),
+            descriptionTextField.heightAnchor.constraint(equalToConstant: 15)
             ])
         
         NSLayoutConstraint.activate([
@@ -195,8 +244,8 @@ class CreateEventsViewController: UIViewController {
     }
     
     @objc func createEvent() {
-        if let event = eventNameTextField.text, let club = organizationTextField.text, let building = buildingTextField.text, let room = roomTextField.text {
-            NetworkManager.createEvent(event: event, club: club, building: building, room: room) { newEvent in
+        if let event = eventNameTextField.text, let club = organizationTextField.text, let location = locationTextField.text, let description = descriptionTextField.text {
+            NetworkManager.createEvent(event: event, club: club, location: location, description: description) { newEvent in
                 DispatchQueue.main.async {
                     print(newEvent)
                     self.dismiss(animated: true, completion: nil)
@@ -216,6 +265,23 @@ class CreateEventsViewController: UIViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    @objc func openImageGallery() {
+        eventImagePickerController.delegate = self
+        eventImagePickerController.sourceType = UIImagePickerController.SourceType.photoLibrary
+        self.present(eventImagePickerController, animated: true, completion: nil)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return false
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        eventImageView.image = image
+        dismiss(animated: true, completion: nil)
     }
 
     /*

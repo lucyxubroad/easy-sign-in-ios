@@ -24,6 +24,8 @@
 		D410E33521F949F200999BE7 /* CreateEventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D410E33421F949F200999BE7 /* CreateEventsViewController.swift */; };
 		D410E33721F9658500999BE7 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D410E33621F9658500999BE7 /* NetworkManager.swift */; };
 		D456A4CB21FAC78F007E3542 /* EventNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4CA21FAC78F007E3542 /* EventNavigationViewController.swift */; };
+		D456A4CD21FE6412007E3542 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4CC21FE6412007E3542 /* SignUpViewController.swift */; };
+		D456A4CF21FE6E56007E3542 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4CE21FE6E56007E3542 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		D410E33421F949F200999BE7 /* CreateEventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventsViewController.swift; sourceTree = "<group>"; };
 		D410E33621F9658500999BE7 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D456A4CA21FAC78F007E3542 /* EventNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNavigationViewController.swift; sourceTree = "<group>"; };
+		D456A4CC21FE6412007E3542 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		D456A4CE21FE6E56007E3542 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EC51C087E8432CC3D5EC10D4 /* Pods-SignInUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignInUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SignInUITests/Pods-SignInUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,10 +157,12 @@
 			children = (
 				B930E55F21DA747300AEA5A4 /* AppDelegate.swift */,
 				B930E56121DA747300AEA5A4 /* ViewController.swift */,
+				D456A4CC21FE6412007E3542 /* SignUpViewController.swift */,
 				D410E33621F9658500999BE7 /* NetworkManager.swift */,
 				B930E59121DA8DA200AEA5A4 /* EventsTabBarViewController.swift */,
 				D456A4CA21FAC78F007E3542 /* EventNavigationViewController.swift */,
 				D410E33421F949F200999BE7 /* CreateEventsViewController.swift */,
+				D456A4CE21FE6E56007E3542 /* User.swift */,
 				B930E59521DA8F3100AEA5A4 /* NearbyEventsViewController.swift */,
 				B930E59321DA8F1500AEA5A4 /* MyEventsViewController.swift */,
 				B930E59721DA9B3C00AEA5A4 /* EventTableViewCell.swift */,
@@ -440,6 +446,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D456A4CD21FE6412007E3542 /* SignUpViewController.swift in Sources */,
 				D410E33721F9658500999BE7 /* NetworkManager.swift in Sources */,
 				D456A4CB21FAC78F007E3542 /* EventNavigationViewController.swift in Sources */,
 				B930E59821DA9B3C00AEA5A4 /* EventTableViewCell.swift in Sources */,
@@ -447,6 +454,7 @@
 				B930E56021DA747300AEA5A4 /* AppDelegate.swift in Sources */,
 				B930E59421DA8F1500AEA5A4 /* MyEventsViewController.swift in Sources */,
 				B930E59621DA8F3100AEA5A4 /* NearbyEventsViewController.swift in Sources */,
+				D456A4CF21FE6E56007E3542 /* User.swift in Sources */,
 				B930E59A21DA9BB200AEA5A4 /* Event.swift in Sources */,
 				D410E33521F949F200999BE7 /* CreateEventsViewController.swift in Sources */,
 				B930E59221DA8DA200AEA5A4 /* EventsTabBarViewController.swift in Sources */,

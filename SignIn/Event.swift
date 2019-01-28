@@ -19,6 +19,6 @@ struct EventResponse: Codable {
 struct Event: Codable {
     var club: String
     var event: String
-    var room: String
-    var building: String
+    var location: String
+    var description: String
 }

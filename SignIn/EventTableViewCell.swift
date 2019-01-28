@@ -57,7 +57,7 @@ class EventTableViewCell: UITableViewCell {
     func configure(for event: Event) {
         eventLabel.text = event.event
         clubLabel.text = event.club
-        locationLabel.text = "\(event.building), \(event.room)"
+        locationLabel.text = event.location
     }
     
     required init?(coder aDecoder: NSCoder) {

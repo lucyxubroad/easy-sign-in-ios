@@ -74,6 +74,7 @@ class NearbyEventsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.view.alpha = 1.0
+        self.getEvents()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -87,7 +88,6 @@ class NearbyEventsViewController: UIViewController {
 extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("tableview")
         let cell = tableView.dequeueReusableCell(withIdentifier: eventsReuseIdentifier, for: indexPath) as! EventTableViewCell
         print(events[indexPath.row].event)
         cell.configure(for: events[indexPath.row])

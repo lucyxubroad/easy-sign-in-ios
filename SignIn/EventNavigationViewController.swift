@@ -18,7 +18,10 @@ class EventNavigationViewController: UIViewController {
     var eventTitleLabel: UILabel!
     var signInEventButton: UIButton!
     var signInStatusImageView: UIImageView!
+    var locationImageView: UIImageView!
     var eventLocationLabel: UILabel!
+    var descriptionImageView: UIImageView!
+    var descriptionLabel: UILabel!
 
 
     override func viewDidLoad() {
@@ -60,11 +63,15 @@ class EventNavigationViewController: UIViewController {
         eventClubLabel.translatesAutoresizingMaskIntoConstraints = false
         eventClubLabel.text = event.club
         eventClubLabel.font = UIFont.systemFont(ofSize: 26, weight: .regular)
+        eventClubLabel.lineBreakMode = .byWordWrapping
+        eventClubLabel.numberOfLines = 0
         
         eventTitleLabel = UILabel()
         eventTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         eventTitleLabel.text = event.event
         eventTitleLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        eventTitleLabel.lineBreakMode = .byWordWrapping
+        eventTitleLabel.numberOfLines = 0
         
         signInEventButton = UIButton()
         signInEventButton.translatesAutoresizingMaskIntoConstraints = false
@@ -80,14 +87,32 @@ class EventNavigationViewController: UIViewController {
         
         eventLocationLabel = UILabel()
         eventLocationLabel.translatesAutoresizingMaskIntoConstraints = false
-        eventLocationLabel.text = "\(event.building), \(event.room)"
+        eventLocationLabel.text = event.location
         eventLocationLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        
+        locationImageView = UIImageView()
+        locationImageView.translatesAutoresizingMaskIntoConstraints = false
+        locationImageView.image = UIImage(named: "location")
+        
+        descriptionImageView = UIImageView()
+        descriptionImageView.translatesAutoresizingMaskIntoConstraints = false
+        descriptionImageView.image = UIImage(named: "description")
+        
+        descriptionLabel = UILabel()
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.text = event.description
+        descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        descriptionLabel.lineBreakMode = .byWordWrapping
+        descriptionLabel.numberOfLines = 0
         
         eventLayerView.addSubview(eventClubLabel)
         eventLayerView.addSubview(eventTitleLabel)
         eventLayerView.addSubview(signInEventButton)
         eventLayerView.addSubview(signInStatusImageView)
         eventLayerView.addSubview(eventLocationLabel)
+        eventLayerView.addSubview(descriptionLabel)
+        eventLayerView.addSubview(locationImageView)
+        eventLayerView.addSubview(descriptionImageView)
         
         view.addSubview(cornellImageView)
         view.addSubview(eventOverlayImageView)
@@ -138,9 +163,23 @@ class EventNavigationViewController: UIViewController {
             ])
         
         NSLayoutConstraint.activate([
+            locationImageView.centerYAnchor.constraint(equalTo: eventLocationLabel.centerYAnchor),
+            locationImageView.leadingAnchor.constraint(equalTo: signInStatusImageView.leadingAnchor),
+            locationImageView.heightAnchor.constraint(equalToConstant: 20),
+            locationImageView.widthAnchor.constraint(equalToConstant: 20),
             eventLocationLabel.topAnchor.constraint(equalTo: eventTitleLabel.bottomAnchor, constant: 25),
             eventLocationLabel.leadingAnchor.constraint(equalTo: eventClubLabel.leadingAnchor),
             eventLocationLabel.trailingAnchor.constraint(equalTo: eventClubLabel.trailingAnchor)
+            ])
+        
+        NSLayoutConstraint.activate([
+            descriptionImageView.centerYAnchor.constraint(equalTo: descriptionLabel.centerYAnchor),
+            descriptionImageView.leadingAnchor.constraint(equalTo: signInStatusImageView.leadingAnchor),
+            descriptionImageView.heightAnchor.constraint(equalToConstant: 20),
+            descriptionImageView.widthAnchor.constraint(equalToConstant: 20),
+            descriptionLabel.topAnchor.constraint(equalTo: eventLocationLabel.bottomAnchor, constant: 25),
+            descriptionLabel.leadingAnchor.constraint(equalTo: eventClubLabel.leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: eventClubLabel.trailingAnchor)
             ])
         
         NSLayoutConstraint.activate([
