@@ -40,6 +40,8 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("ViewController.swift opened")
+        
         GIDSignIn.sharedInstance().clientID = "677384728906-rbj660t12ucu51eot9tv7556f2sioamp.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
@@ -150,6 +152,7 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
         
         setUpConstraints()
         hideKeyboard()
+        isLoggedIn()
     }
     
     func setUpConstraints() {
@@ -259,13 +262,27 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
     @objc func signIn() {
         if let email = emailTextField?.text, let password = passwordTextField?.text {
             self.showActivityIndicator()
+            print("signIn")
             NetworkManager.loginUser(email: email, password: password) { registeredUser in
                 DispatchQueue.main.async {
+                    print(registeredUser.user.email)
+                    print(registeredUser.user.first_name)
+                    print(registeredUser.user.last_name)
+                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                    UserDefaults.standard.set(registeredUser.user.id, forKey: "currentUserId")
+                    UserDefaults.standard.synchronize()
                     let eventsTabBarViewController = EventsTabBarViewController()
+                    eventsTabBarViewController.userInformation = registeredUser.user
                     self.hideActivityIndicator()
                     self.navigationController?.pushViewController(eventsTabBarViewController, animated: true)
                 }
             }
+        }
+    }
+    
+    func isLoggedIn() {
+        if (UserDefaults.standard.bool(forKey: "isLoggedIn")) {
+            presentApp()
         }
     }
     
@@ -284,25 +301,19 @@ class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, 
         if let error = error {
             print("\(error.localizedDescription)")
         } else {
-            /*
-             Perform any operations on signed in user here.
-             let userId = user.userID                  // For client-side use only!
-             let idToken = user.authentication.idToken // Safe to send to the server
-             let fullName = user.profile.name
-             let givenName = user.profile.givenName
-             let familyName = user.profile.familyName
-             let email = user.profile.email
-             print("Successful sign in! \n userId: \(userId), idToken: \(idToken), fullName: \(fullName), givenName: \(givenName), familyName: \(familyName), email: \(email)")
-             */
-            
             let deadlineTime = DispatchTime.now() + 2
             DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
                 let eventsTabBarViewController = EventsTabBarViewController()
                 self.hideActivityIndicator()
                 self.navigationController?.pushViewController(eventsTabBarViewController, animated: true)
             }
-            
         }
+    }
+    
+    func presentApp() {
+        let eventsTabBarViewController = EventsTabBarViewController()
+        self.hideActivityIndicator()
+        self.navigationController?.pushViewController(eventsTabBarViewController, animated: false)
     }
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!,

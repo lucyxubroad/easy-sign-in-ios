@@ -31,12 +31,30 @@ class NetworkManager {
         }
     }
     
-    static func createEvent(event: String, club: String, location: String, description: String, completion: @escaping (Event) -> Void) {
+    static func getEventsByUserId(userId: Int, completion: @escaping ([Event]) -> Void) {
+        let eventsEndpoint = "http://35.229.55.231/api/\(userId)/events/"
+        Alamofire.request(eventsEndpoint, method: .get).validate().responseData { (response) in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                if let eventResponse = try? jsonDecoder.decode(EventResponse.self, from: data) {
+                    completion(eventResponse.data)
+                } else {
+                    print("Invalid Response Data")
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    static func createEvent(event: String, club: String, location: String, description: String, event_creator: Int, completion: @escaping (Event) -> Void) {
         let parameters: [String: Any] = [
             "event": event,
             "club": club,
             "location": location,
-            "description": description
+            "description": description,
+            "event_creator": event_creator
         ]
         
         Alamofire.request(eventsEndpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: [:]).validate().responseData { (response) in
@@ -83,6 +101,7 @@ class NetworkManager {
     }
     
     static func loginUser(email: String, password: String, completion: @escaping (RegisterUserResponse) -> Void) {
+        print("loginUser")
         let parameters: [String: Any] = [
             "email": email,
             "password": password
@@ -91,6 +110,7 @@ class NetworkManager {
         Alamofire.request(loginUserEndpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: [:]).validate().responseData { (response) in
             switch response.result {
             case .success(let data):
+                print("Success in loginUser")
                 if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
                     print(json)
                 }

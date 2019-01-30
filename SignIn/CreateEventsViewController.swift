@@ -245,7 +245,7 @@ class CreateEventsViewController: UIViewController, UITextFieldDelegate, UIImage
     
     @objc func createEvent() {
         if let event = eventNameTextField.text, let club = organizationTextField.text, let location = locationTextField.text, let description = descriptionTextField.text {
-            NetworkManager.createEvent(event: event, club: club, location: location, description: description) { newEvent in
+            NetworkManager.createEvent(event: event, club: club, location: location, description: description, event_creator: UserDefaults.standard.integer(forKey: "currentUserId")) { newEvent in
                 DispatchQueue.main.async {
                     print(newEvent)
                     self.dismiss(animated: true, completion: nil)

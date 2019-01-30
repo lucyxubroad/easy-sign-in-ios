@@ -15,9 +15,12 @@ class MyEventsViewController: UIViewController {
     var createEventButton: UIButton!
     
     var events = [Event]()
+    var userInformation: User!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(userInformation)
         
         view.backgroundColor = UIColor.white
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -86,7 +89,8 @@ class MyEventsViewController: UIViewController {
     
     /// Gets classes from the network by making an API call.
     func getEvents() {
-        NetworkManager.getEvents { eventsArray in
+        let userId = UserDefaults.standard.integer(forKey: "currentUserId")
+        NetworkManager.getEventsByUserId(userId: userId) { eventsArray in
             self.events = eventsArray
             DispatchQueue.main.async {
                 self.eventsTableView.reloadData()
@@ -100,9 +104,7 @@ class MyEventsViewController: UIViewController {
 extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("tableview")
         let cell = tableView.dequeueReusableCell(withIdentifier: eventsReuseIdentifier, for: indexPath) as! EventTableViewCell
-        print(events[indexPath.row].event)
         cell.configure(for: events[indexPath.row])
         return cell
     }

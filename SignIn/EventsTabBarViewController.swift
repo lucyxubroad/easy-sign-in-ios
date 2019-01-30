@@ -9,6 +9,8 @@
 import UIKit
 
 class EventsTabBarViewController: UITabBarController {
+    
+    var userInformation: User!
 
     override func viewDidLoad() {
         super.viewDidLoad()

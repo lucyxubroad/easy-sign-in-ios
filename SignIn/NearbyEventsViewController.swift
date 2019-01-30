@@ -8,12 +8,6 @@
 
 import UIKit
 
-//let aces = Event(club: "Assorted Aces", event: "Dance Practice", room: "203", building: "Rockefeller Hall")
-//let appdev = Event(club: "CUAppDev", event: "Developer Meeting", room: "B04", building: "Upson Hall")
-//let aiesec = Event(club: "Cornell AIESEC", event: "General Body Meeting", room: "102", building: "Clarkson Hall")
-//
-//var events = [aces, appdev, aiesec]
-
 class NearbyEventsViewController: UIViewController {
     
     var events = [Event]()
@@ -89,7 +83,6 @@ extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: eventsReuseIdentifier, for: indexPath) as! EventTableViewCell
-        print(events[indexPath.row].event)
         cell.configure(for: events[indexPath.row])
         return cell
     }

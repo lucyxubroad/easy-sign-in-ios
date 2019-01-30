@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class EventNavigationViewController: UIViewController {
     
@@ -23,7 +24,21 @@ class EventNavigationViewController: UIViewController {
     var descriptionImageView: UIImageView!
     var descriptionLabel: UILabel!
 
-
+    lazy var signInPopUpUIView: SignInPopUpUIView = {
+        let view = SignInPopUpUIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 10
+        view.delegate = selft
+        return view
+    }()
+    
+    let visualEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .light)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -83,7 +98,7 @@ class EventNavigationViewController: UIViewController {
         signInEventButton.layer.shadowOpacity = 0.6;
         signInEventButton.layer.shadowRadius = 20;
         signInEventButton.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-        signInEventButton.addTarget(self, action: #selector(signInEvent), for: .touchUpInside)
+        signInEventButton.addTarget(self, action: #selector(authenticateEventSignIn), for: .touchUpInside)
         
         eventLocationLabel = UILabel()
         eventLocationLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -117,6 +132,13 @@ class EventNavigationViewController: UIViewController {
         view.addSubview(cornellImageView)
         view.addSubview(eventOverlayImageView)
         view.addSubview(eventLayerView)
+        view.addSubview(visualEffectView)
+        visualEffectView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        visualEffectView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        visualEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        visualEffectView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        
+        visualEffectView.alpha = 0
         
         setUpConstraints()
     }
@@ -188,11 +210,56 @@ class EventNavigationViewController: UIViewController {
             signInEventButton.trailingAnchor.constraint(equalTo: eventLayerView.trailingAnchor, constant: -75),
             signInEventButton.heightAnchor.constraint(equalToConstant: 40)
             ])
+
     }
     
-    @objc func signInEvent() {
-        print("sign in!")
+    func setUpPopUpConstraints() {
+        NSLayoutConstraint.activate([
+            signInPopUpUIView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            signInPopUpUIView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            signInPopUpUIView.heightAnchor.constraint(equalToConstant: 300),
+            signInPopUpUIView.widthAnchor.constraint(equalToConstant: 300)
+            ])
+        
+        signInPopUpUIView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        signInPopUpUIView.alpha = 0
+        UIView.animate(withDuration: 0.5, animations: {
+            self.visualEffectView.alpha = 1
+            self.signInPopUpUIView.alpha = 1
+            self.signInPopUpUIView.transform = CGAffineTransform.identity
+            })
     }
+    
+    @objc func authenticateEventSignIn() {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Event Verification for Sign In"
+            
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
+                [unowned self] success, authenticationError in
+                
+                DispatchQueue.main.async {
+                    if success {
+                        print("success")
+                        self.view.addSubview(self.signInPopUpUIView)
+                        self.setUpPopUpConstraints()
+                    } else {
+                        let ac = UIAlertController(title: "Authentication failed", message: "Try again!", preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(ac, animated: true)
+                    }
+                }
+            }
+        } else {
+            let ac = UIAlertController(title: "Touch ID not available", message: "Your device is not configured for Touch ID.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
+    }
+    
+    
 
 
     /*
@@ -205,4 +272,16 @@ class EventNavigationViewController: UIViewController {
     }
     */
 
+}
+
+extension EventNavigationViewController: PopUpDelegate {
+    func handleDismissal() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.visualEffectView.alpha = 0
+            self.signInPopUpUIView.alpha = 0
+            self.signInPopUpUIView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        }) { (_) in
+            self.signInPopUpUIView.removeFromSuperview()
+        }
+    }
 }

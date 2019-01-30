@@ -26,6 +26,7 @@
 		D456A4CB21FAC78F007E3542 /* EventNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4CA21FAC78F007E3542 /* EventNavigationViewController.swift */; };
 		D456A4CD21FE6412007E3542 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4CC21FE6412007E3542 /* SignUpViewController.swift */; };
 		D456A4CF21FE6E56007E3542 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4CE21FE6E56007E3542 /* User.swift */; };
+		D456A4D52201E142007E3542 /* SignInPopUpUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4D42201E142007E3542 /* SignInPopUpUIView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		D456A4CA21FAC78F007E3542 /* EventNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNavigationViewController.swift; sourceTree = "<group>"; };
 		D456A4CC21FE6412007E3542 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D456A4CE21FE6E56007E3542 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D456A4D42201E142007E3542 /* SignInPopUpUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPopUpUIView.swift; sourceTree = "<group>"; };
 		EC51C087E8432CC3D5EC10D4 /* Pods-SignInUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignInUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SignInUITests/Pods-SignInUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,6 +168,7 @@
 				B930E59521DA8F3100AEA5A4 /* NearbyEventsViewController.swift */,
 				B930E59321DA8F1500AEA5A4 /* MyEventsViewController.swift */,
 				B930E59721DA9B3C00AEA5A4 /* EventTableViewCell.swift */,
+				D456A4D42201E142007E3542 /* SignInPopUpUIView.swift */,
 				B930E59921DA9BB200AEA5A4 /* Event.swift */,
 				B930E56621DA747400AEA5A4 /* Assets.xcassets */,
 				B930E56821DA747400AEA5A4 /* LaunchScreen.storyboard */,
@@ -450,6 +453,7 @@
 				D410E33721F9658500999BE7 /* NetworkManager.swift in Sources */,
 				D456A4CB21FAC78F007E3542 /* EventNavigationViewController.swift in Sources */,
 				B930E59821DA9B3C00AEA5A4 /* EventTableViewCell.swift in Sources */,
+				D456A4D52201E142007E3542 /* SignInPopUpUIView.swift in Sources */,
 				B930E56221DA747300AEA5A4 /* ViewController.swift in Sources */,
 				B930E56021DA747300AEA5A4 /* AppDelegate.swift in Sources */,
 				B930E59421DA8F1500AEA5A4 /* MyEventsViewController.swift in Sources */,
