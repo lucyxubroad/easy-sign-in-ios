@@ -28,7 +28,7 @@ class EventNavigationViewController: UIViewController {
         let view = SignInPopUpUIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 10
-        view.delegate = selft
+        view.delegate = self
         return view
     }()
     
