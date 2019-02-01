@@ -27,6 +27,11 @@
 		D456A4CD21FE6412007E3542 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4CC21FE6412007E3542 /* SignUpViewController.swift */; };
 		D456A4CF21FE6E56007E3542 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4CE21FE6E56007E3542 /* User.swift */; };
 		D456A4D52201E142007E3542 /* SignInPopUpUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4D42201E142007E3542 /* SignInPopUpUIView.swift */; };
+		D456A4D7220287E2007E3542 /* EventAttendeesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4D6220287E2007E3542 /* EventAttendeesViewController.swift */; };
+		D456A4D9220288CF007E3542 /* AttendeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4D8220288CF007E3542 /* AttendeeTableViewCell.swift */; };
+		D456A4DB22029F3A007E3542 /* BannerSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4DA22029F3A007E3542 /* BannerSelectViewController.swift */; };
+		D456A4DD22029F6C007E3542 /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4DC22029F6C007E3542 /* BannerTableViewCell.swift */; };
+		D456A4DF2203B772007E3542 /* AttendeeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D456A4DE2203B772007E3542 /* AttendeeCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +83,11 @@
 		D456A4CC21FE6412007E3542 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D456A4CE21FE6E56007E3542 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D456A4D42201E142007E3542 /* SignInPopUpUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPopUpUIView.swift; sourceTree = "<group>"; };
+		D456A4D6220287E2007E3542 /* EventAttendeesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAttendeesViewController.swift; sourceTree = "<group>"; };
+		D456A4D8220288CF007E3542 /* AttendeeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendeeTableViewCell.swift; sourceTree = "<group>"; };
+		D456A4DA22029F3A007E3542 /* BannerSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerSelectViewController.swift; sourceTree = "<group>"; };
+		D456A4DC22029F6C007E3542 /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
+		D456A4DE2203B772007E3542 /* AttendeeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendeeCollectionViewCell.swift; sourceTree = "<group>"; };
 		EC51C087E8432CC3D5EC10D4 /* Pods-SignInUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignInUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SignInUITests/Pods-SignInUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,12 +173,17 @@
 				D410E33621F9658500999BE7 /* NetworkManager.swift */,
 				B930E59121DA8DA200AEA5A4 /* EventsTabBarViewController.swift */,
 				D456A4CA21FAC78F007E3542 /* EventNavigationViewController.swift */,
+				D456A4DA22029F3A007E3542 /* BannerSelectViewController.swift */,
 				D410E33421F949F200999BE7 /* CreateEventsViewController.swift */,
-				D456A4CE21FE6E56007E3542 /* User.swift */,
+				D456A4D6220287E2007E3542 /* EventAttendeesViewController.swift */,
 				B930E59521DA8F3100AEA5A4 /* NearbyEventsViewController.swift */,
 				B930E59321DA8F1500AEA5A4 /* MyEventsViewController.swift */,
 				B930E59721DA9B3C00AEA5A4 /* EventTableViewCell.swift */,
+				D456A4D8220288CF007E3542 /* AttendeeTableViewCell.swift */,
+				D456A4DE2203B772007E3542 /* AttendeeCollectionViewCell.swift */,
+				D456A4DC22029F6C007E3542 /* BannerTableViewCell.swift */,
 				D456A4D42201E142007E3542 /* SignInPopUpUIView.swift */,
+				D456A4CE21FE6E56007E3542 /* User.swift */,
 				B930E59921DA9BB200AEA5A4 /* Event.swift */,
 				B930E56621DA747400AEA5A4 /* Assets.xcassets */,
 				B930E56821DA747400AEA5A4 /* LaunchScreen.storyboard */,
@@ -449,9 +464,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D456A4DB22029F3A007E3542 /* BannerSelectViewController.swift in Sources */,
+				D456A4D9220288CF007E3542 /* AttendeeTableViewCell.swift in Sources */,
 				D456A4CD21FE6412007E3542 /* SignUpViewController.swift in Sources */,
 				D410E33721F9658500999BE7 /* NetworkManager.swift in Sources */,
+				D456A4DD22029F6C007E3542 /* BannerTableViewCell.swift in Sources */,
 				D456A4CB21FAC78F007E3542 /* EventNavigationViewController.swift in Sources */,
+				D456A4DF2203B772007E3542 /* AttendeeCollectionViewCell.swift in Sources */,
+				D456A4D7220287E2007E3542 /* EventAttendeesViewController.swift in Sources */,
 				B930E59821DA9B3C00AEA5A4 /* EventTableViewCell.swift in Sources */,
 				D456A4D52201E142007E3542 /* SignInPopUpUIView.swift in Sources */,
 				B930E56221DA747300AEA5A4 /* ViewController.swift in Sources */,

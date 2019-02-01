@@ -18,7 +18,6 @@ class NearbyEventsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.white
         navigationItem.title = "Nearby Events"
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -31,11 +30,16 @@ class NearbyEventsViewController: UIViewController {
         ]
         navigationController?.navigationBar.tintColor = .white
         
+        let signOutButtonItem = UIBarButtonItem.init(image: UIImage(named: "logout"), style: .done, target: self, action: #selector(signOut))
+        navigationItem.rightBarButtonItem = signOutButtonItem
+        
         eventsTableView = UITableView()
         eventsTableView.translatesAutoresizingMaskIntoConstraints = false
         eventsTableView.allowsSelection = true
         eventsTableView.delegate = self
         eventsTableView.dataSource = self
+        eventsTableView.bounces = false
+        eventsTableView.separatorStyle = .none
         eventsTableView.register(EventTableViewCell.self, forCellReuseIdentifier: eventsReuseIdentifier)
         eventsTableView.estimatedRowHeight = 50.0
         eventsTableView.tableFooterView = UIView() // so there's no empty lines at the bottom
@@ -49,8 +53,8 @@ class NearbyEventsViewController: UIViewController {
     func setUpConstraints() {
         NSLayoutConstraint.activate([
             eventsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            eventsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            eventsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            eventsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            eventsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             eventsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
             ])
     }
@@ -76,6 +80,12 @@ class NearbyEventsViewController: UIViewController {
         self.view.alpha = 0.0
     }
     
+    @objc func signOut() {
+        UserDefaults.standard.set(false, forKey: "isLoggedIn")
+        UserDefaults.standard.synchronize()
+        let signInViewController = ViewController()
+        navigationController?.present(signInViewController, animated: false, completion: nil)
+    }
     
 }
 
@@ -83,6 +93,7 @@ extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: eventsReuseIdentifier, for: indexPath) as! EventTableViewCell
+        cell.selectionStyle = .none
         cell.configure(for: events[indexPath.row])
         return cell
     }
@@ -100,7 +111,7 @@ extension NearbyEventsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView,heightForRowAt indexPath:IndexPath) -> CGFloat
     {
-        return 75
+        return 80
     }
     
 //    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat

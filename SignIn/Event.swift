@@ -21,4 +21,6 @@ struct Event: Codable {
     var event: String
     var location: String
     var description: String
+    var id: Int
+    var photo: String
 }

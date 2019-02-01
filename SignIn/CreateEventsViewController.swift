@@ -25,6 +25,7 @@ class CreateEventsViewController: UIViewController, UITextFieldDelegate, UIImage
     var eventTintedImageView: UIImageView!
     var eventImagePickerButton: UIButton!
     var eventImagePickerController: UIImagePickerController!
+    var eventImageName = "fogg-1"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +46,7 @@ class CreateEventsViewController: UIViewController, UITextFieldDelegate, UIImage
         eventImageView = UIImageView()
         eventImageView.translatesAutoresizingMaskIntoConstraints = false
         eventImageView.layer.cornerRadius = 20
-        eventImageView.image = UIImage(named: "cornell")
+        eventImageView.image = UIImage(named: "fogg-1")
         eventImageView.contentMode = .scaleAspectFill
         eventImageView.clipsToBounds = true
         
@@ -59,7 +60,7 @@ class CreateEventsViewController: UIViewController, UITextFieldDelegate, UIImage
         eventImagePickerButton.setTitle("Select banner", for: .normal)
         eventImagePickerButton.setTitleColor(UIColor(red: 122/255, green: 171/255, blue: 237/255, alpha: 1), for: .normal)
         eventImagePickerButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
-        eventImagePickerButton.addTarget(self, action: #selector(openImageGallery), for: .touchUpInside)
+        eventImagePickerButton.addTarget(self, action: #selector(openBannerGallery), for: .touchUpInside)
         
         eventImagePickerController = UIImagePickerController()
         
@@ -245,7 +246,7 @@ class CreateEventsViewController: UIViewController, UITextFieldDelegate, UIImage
     
     @objc func createEvent() {
         if let event = eventNameTextField.text, let club = organizationTextField.text, let location = locationTextField.text, let description = descriptionTextField.text {
-            NetworkManager.createEvent(event: event, club: club, location: location, description: description, event_creator: UserDefaults.standard.integer(forKey: "currentUserId")) { newEvent in
+            NetworkManager.createEvent(event: event, club: club, location: location, description: description, event_creator: UserDefaults.standard.integer(forKey: "currentUserId"), photo: eventImageName) { newEvent in
                 DispatchQueue.main.async {
                     print(newEvent)
                     self.dismiss(animated: true, completion: nil)
@@ -273,6 +274,12 @@ class CreateEventsViewController: UIViewController, UITextFieldDelegate, UIImage
         self.present(eventImagePickerController, animated: true, completion: nil)
     }
     
+    @objc func openBannerGallery() {
+        let bannerSelectViewController = BannerSelectViewController()
+        bannerSelectViewController.delegate = self
+        self.present(bannerSelectViewController, animated: true, completion: nil)
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return false
@@ -294,4 +301,11 @@ class CreateEventsViewController: UIViewController, UITextFieldDelegate, UIImage
     }
     */
 
+}
+
+extension CreateEventsViewController: BannerSelectionDelegate {
+    func selectBanner(image: String) {
+        eventImageView.image = UIImage(named: image)
+        eventImageName = image
+    }
 }

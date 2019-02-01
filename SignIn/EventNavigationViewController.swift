@@ -27,13 +27,13 @@ class EventNavigationViewController: UIViewController {
     lazy var signInPopUpUIView: SignInPopUpUIView = {
         let view = SignInPopUpUIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 5
         view.delegate = self
         return view
     }()
     
     let visualEffectView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -56,18 +56,20 @@ class EventNavigationViewController: UIViewController {
         
         cornellImageView = UIImageView()
         cornellImageView.translatesAutoresizingMaskIntoConstraints = false
-        cornellImageView.image = UIImage(named: "cornell")
+        cornellImageView.image = UIImage(named: event.photo)
         cornellImageView.contentMode = .scaleAspectFill
         cornellImageView.clipsToBounds = true
         
         eventOverlayImageView = UIImageView()
         eventOverlayImageView.translatesAutoresizingMaskIntoConstraints = false
-        eventOverlayImageView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3)
+//        eventOverlayImageView.backgroundColor = UIColor(red: 216/255, green: 227/255, blue: 241/255, alpha: 0.5)
         
         eventLayerView = UIView()
         eventLayerView.translatesAutoresizingMaskIntoConstraints = false
         eventLayerView.backgroundColor = .white
-        eventLayerView.layer.cornerRadius = 10
+        eventLayerView.layer.cornerRadius = 12
+        eventLayerView.layer.borderColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1).cgColor
+        eventLayerView.layer.borderWidth = 1.5
         
         signInStatusImageView = UIImageView()
         signInStatusImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -162,7 +164,7 @@ class EventNavigationViewController: UIViewController {
             ])
         
         NSLayoutConstraint.activate([
-            eventLayerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            eventLayerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10),
             eventLayerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             eventLayerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             eventLayerView.topAnchor.constraint(equalTo: cornellImageView.bottomAnchor, constant: -30),
@@ -217,13 +219,13 @@ class EventNavigationViewController: UIViewController {
         NSLayoutConstraint.activate([
             signInPopUpUIView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             signInPopUpUIView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            signInPopUpUIView.heightAnchor.constraint(equalToConstant: 300),
+            signInPopUpUIView.heightAnchor.constraint(equalToConstant: 400),
             signInPopUpUIView.widthAnchor.constraint(equalToConstant: 300)
             ])
         
         signInPopUpUIView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         signInPopUpUIView.alpha = 0
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.25, animations: {
             self.visualEffectView.alpha = 1
             self.signInPopUpUIView.alpha = 1
             self.signInPopUpUIView.transform = CGAffineTransform.identity
@@ -242,7 +244,7 @@ class EventNavigationViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     if success {
-                        print("success")
+                        self.signInEvent()
                         self.view.addSubview(self.signInPopUpUIView)
                         self.setUpPopUpConstraints()
                     } else {
@@ -256,6 +258,15 @@ class EventNavigationViewController: UIViewController {
             let ac = UIAlertController(title: "Touch ID not available", message: "Your device is not configured for Touch ID.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
+        }
+    }
+    
+    func signInEvent() {
+        print("signInEvent")
+        NetworkManager.signInEvent(event_id: event.id, user_id: UserDefaults.standard.integer(forKey: "currentUserId")) { event in
+            DispatchQueue.main.async {
+                print(event)
+            }
         }
     }
     
@@ -276,7 +287,7 @@ class EventNavigationViewController: UIViewController {
 
 extension EventNavigationViewController: PopUpDelegate {
     func handleDismissal() {
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.25, animations: {
             self.visualEffectView.alpha = 0
             self.signInPopUpUIView.alpha = 0
             self.signInPopUpUIView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)

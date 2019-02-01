@@ -48,16 +48,58 @@ class NetworkManager {
         }
     }
     
-    static func createEvent(event: String, club: String, location: String, description: String, event_creator: Int, completion: @escaping (Event) -> Void) {
+    static func getEventsAttendees(event_id: Int, completion: @escaping ([User]) -> Void) {
+        let eventsEndpoint = "http://35.229.55.231/api/event/\(event_id)/attendees/"
+        Alamofire.request(eventsEndpoint, method: .get).validate().responseData { (response) in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                if let eventResponse = try? jsonDecoder.decode(EventAttendeeResponse.self, from: data) {
+                    completion(eventResponse.data)
+                } else {
+                    print("Invalid Response Data")
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    static func createEvent(event: String, club: String, location: String, description: String, event_creator: Int, photo: String, completion: @escaping (Event) -> Void) {
         let parameters: [String: Any] = [
             "event": event,
             "club": club,
             "location": location,
             "description": description,
-            "event_creator": event_creator
+            "event_creator": event_creator,
+            "photo": photo
         ]
         
         Alamofire.request(eventsEndpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: [:]).validate().responseData { (response) in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                if let eventResponse = try? jsonDecoder.decode(EventReturnResponse.self, from: data) {
+                    completion(eventResponse.data)
+                } else {
+                    print("Invalid Response Data")
+                }
+            case .failure(let error):
+                print("There was an error!")
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    static func signInEvent(event_id: Int, user_id: Int, completion: @escaping (Event) -> Void) {
+        print(user_id)
+        print(event_id)
+        let parameters: [String: Any] = [
+            "user_id": user_id
+        ]
+        let signInEndpoint = "http://35.229.55.231/api/event/\(event_id)/signin/"
+        
+        Alamofire.request(signInEndpoint, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: [:]).validate().responseData { (response) in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

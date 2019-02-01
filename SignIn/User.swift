@@ -8,6 +8,10 @@
 
 import Foundation
 
+struct EventAttendeeResponse: Codable {
+    var data: [User]
+}
+
 struct RegisterUserResponse: Codable {
     var session_token: String
     var session_expiration: String

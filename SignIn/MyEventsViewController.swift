@@ -15,26 +15,32 @@ class MyEventsViewController: UIViewController {
     var createEventButton: UIButton!
     
     var events = [Event]()
-    var userInformation: User!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(userInformation)
-        
-        view.backgroundColor = UIColor.white
+
+        navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.barTintColor = UIColor(red: 122/255, green: 171/255, blue: 237/255, alpha: 1)
         navigationController?.navigationBar.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white
         ]
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        navigationController?.navigationBar.tintColor = .white
         navigationItem.title = "My Events"
+        
+        let signOutButtonItem = UIBarButtonItem.init(image: UIImage(named: "logout"), style: .done, target: self, action: #selector(signOut))
+        navigationItem.rightBarButtonItem = signOutButtonItem
         
         eventsTableView = UITableView()
         eventsTableView.translatesAutoresizingMaskIntoConstraints = false
         eventsTableView.allowsSelection = true
         eventsTableView.delegate = self
         eventsTableView.dataSource = self
+        eventsTableView.separatorStyle = .none
+        eventsTableView.bounces = false
         eventsTableView.register(EventTableViewCell.self, forCellReuseIdentifier: eventsReuseIdentifier)
         eventsTableView.estimatedRowHeight = 50.0
         eventsTableView.tableFooterView = UIView() // so there's no empty lines at the bottom
@@ -58,8 +64,8 @@ class MyEventsViewController: UIViewController {
     func setUpConstraints() {
         NSLayoutConstraint.activate([
             eventsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            eventsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            eventsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            eventsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            eventsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             eventsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
             ])
         
@@ -97,6 +103,13 @@ class MyEventsViewController: UIViewController {
             }
         }
     }
+    
+    @objc func signOut() {
+        UserDefaults.standard.set(false, forKey: "isLoggedIn")
+        UserDefaults.standard.synchronize()
+        let signInViewController = ViewController()
+        navigationController?.present(signInViewController, animated: false, completion: nil)
+    }
 }
 
 
@@ -105,8 +118,16 @@ extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: eventsReuseIdentifier, for: indexPath) as! EventTableViewCell
+        cell.selectionStyle = .none
         cell.configure(for: events[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let event = events[indexPath.row]
+        let eventAttendeesViewController = EventAttendeesViewController()
+        eventAttendeesViewController.event = event
+        navigationController?.pushViewController(eventAttendeesViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -115,7 +136,7 @@ extension MyEventsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,heightForRowAt indexPath:IndexPath) -> CGFloat
     {
-        return 75
+        return 80
     }
     
     //    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
