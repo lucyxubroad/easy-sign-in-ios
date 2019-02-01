@@ -11,7 +11,7 @@ Backend Implementation
  * Sign In Server v1: https://github.com/lucyxubroad/signin-backend
  
 Demo (screenshots)
- <img src="/images/signin-demo-2x.png">
+ <img src="./images/signin-demo-2x.png">
 
  # Installation
  
