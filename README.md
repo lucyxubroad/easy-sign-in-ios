@@ -10,6 +10,9 @@ keep record of their club engagement. This is the first version of my efforts.
 Backend Implementation
  * Sign In Server v1: https://github.com/lucyxubroad/signin-backend
  
+Demo (screenshots)
+ <img src="/images/signin-demo-2x.png">
+
  # Installation
  
  I used [CocoaPods](https://cocoapods.org "CocoaPods") for my dependency manager. This should be installed before 
@@ -27,5 +30,3 @@ Backend Implementation
 
  Open the SignIn Xcode workspace, SignIn.xcworkspace.
  
- # Demo (screenshots)
- <img src="/Demos/demo-screenshots.png">
